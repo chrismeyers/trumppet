@@ -38,7 +38,7 @@ def cli(context):
 
 @click.command()
 def record():
-    statuses = _api.GetUserTimeline(screen_name='realDonaldTrump')
+    statuses = list(reversed(_api.GetUserTimeline(screen_name='realDonaldTrump')))
     new_tweets = False
 
     for status in statuses:
