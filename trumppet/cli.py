@@ -37,10 +37,13 @@ _api = twitter.Api(consumer_key=_twitter_config['consumer_key'],
 @click.group(invoke_without_command=True, context_settings=dict(help_option_names=['-h', '--help']))
 @click.pass_context
 def cli(context):
+    '''
+    Donald Trump tweet analyzer
+    '''
     pass
 
 
-@click.command()
+@click.command('record', short_help='fetch and store latest tweets')
 def record():
     '''
     Fetches the last 20 tweets and stores any that are new
@@ -82,7 +85,7 @@ def record():
         print('No new insight from The Tweeter in Chief...')
 
 
-@click.command()
+@click.command('playback', short_help='print all stored tweets')
 def playback():
     '''
     Prints all stored tweets
@@ -92,7 +95,7 @@ def playback():
         print(f'[{tweet["created_at"]}] {tweet["full_text"]}\n')
 
 
-@click.command()
+@click.command('frequency', short_help='get unique word counts')
 def frequency():
     '''
     Gets a list of unique words in all tweets and a count of their occurrences
