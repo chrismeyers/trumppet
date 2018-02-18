@@ -1,0 +1,5 @@
+build/
+dist/
+trumppet.egg-info/
+__pycache__
+.DS_Store

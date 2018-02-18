@@ -1,0 +1,16 @@
+{
+  "mongodb": {
+    "db": "trumppet",
+    "collection": "tweets",
+    "server": "localhost",
+    "port": 27017,
+    "user": "",
+    "pass": ""
+  },
+  "twitter": {
+    "consumer_key": "",
+    "consumer_secret": "",
+    "access_token": "",
+    "access_token_secret": ""
+  }
+}
