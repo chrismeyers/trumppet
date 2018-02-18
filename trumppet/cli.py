@@ -107,12 +107,13 @@ def frequency():
     for tweet in _db_tweets.find().sort("_id", pymongo.ASCENDING):
         # Clean the tweet. Remove URLs, numbers and specified punctuation.
         text = tweet['full_text'].lower().strip()
-        text = re.sub(r'^https?:\/\/.*[\r\n]*', '', text)
+        text = re.sub(r'http\S+', '', text)
         text = re.sub(r'\d+', '', text)
+        text = text.replace('...', ' ')
         text = html.unescape(text)
         text = text.translate(translator)
 
-        words = text.split(' ')
+        words = text.strip().split(' ')
 
         for word in words:
             if word == '' or word in punctuation_to_keep:
@@ -122,7 +123,6 @@ def frequency():
             else:
                 best_words[word] = 1
 
-    
     best_words = sorted(best_words.items(), key=itemgetter(1), reverse=False)
 
     print(f'@{_twitter_config["screen_name"]} really does have the best words!')
