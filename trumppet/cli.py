@@ -105,6 +105,9 @@ def frequency():
     translator = str.maketrans('', '', punctuation_to_remove)
 
     for tweet in _db_tweets.find().sort("_id", pymongo.ASCENDING):
+        if 'retweeted_status' in tweet:
+            continue # Skip retweets
+
         # Clean the tweet. Remove URLs, numbers and specified punctuation.
         text = tweet['full_text'].lower().strip()
         text = re.sub(r'http\S+', '', text)
