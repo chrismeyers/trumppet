@@ -13,6 +13,7 @@ Options:
   -h, --help  Show this message and exit.
 
 Commands:
+  catalog    fetch and store all possible tweets
   frequency  get unique word counts
   playback   print all stored tweets
   record     fetch and store latest tweets

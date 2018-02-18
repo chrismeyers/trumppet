@@ -8,12 +8,14 @@ import click
 import pymongo
 from mcgpyutils import FileSystemUtils
 from mcgpyutils import ConfigUtils
+from mcgpyutils import OutputUtils
 
 if __name__ == "__main__":
     from __version__ import __version__
 else:
     from .__version__ import __version__
 
+_ou = OutputUtils()
 
 _fsu = FileSystemUtils()
 _fsu.set_config_location(f'{_fsu.get_path_to_script(__file__)}/config')
@@ -31,7 +33,8 @@ _api = twitter.Api(consumer_key=_twitter_config['consumer_key'],
                    consumer_secret=_twitter_config['consumer_secret'],
                    access_token_key=_twitter_config['access_token'],
                    access_token_secret=_twitter_config['access_token_secret'],
-                   tweet_mode='extended')
+                   tweet_mode='extended',
+                   sleep_on_rate_limit=True)
 
 
 @click.group(invoke_without_command=True, context_settings=dict(help_option_names=['-h', '--help']))
@@ -43,6 +46,43 @@ def cli(context):
     pass
 
 
+@click.command('catalog', short_help='fetch and store all possible tweets')
+def catalog():
+    '''
+    Fetches all the tweets returned by the Twitter API (limited to last 3200)
+    '''
+
+    max_tweet_archive = 3200
+    tweets_per_call = 200
+    oldest_tweet_id = None
+    tweets = []
+    batch = 1
+
+    while len(tweets) < max_tweet_archive:
+        statuses = _api.GetUserTimeline(screen_name=_twitter_config['screen_name'], 
+                                        count=tweets_per_call,
+                                        max_id=oldest_tweet_id)
+
+        _ou.info(f'Processing tweet batch {batch} ({len(statuses)} new, {len(tweets)} total)...')
+
+        for i, status in enumerate(statuses):
+            if i == 0 and oldest_tweet_id:
+                # max_id returns tweets greater than or EQUAL to the given ID.
+                # Skipping the first tweet of the current batch prevents 
+                # duplicating the last tweet of the previous batch.
+                continue
+            tweets.append(prepare_tweet(status))
+
+        oldest_tweet_id = statuses[-1].id_str
+        batch += 1
+
+    try:
+        _db_tweets.insert_many(list(reversed(tweets)))
+        _ou.info(f'Inserted {len(tweets)} tweets')
+    except pymongo.errors.BulkWriteError as e:
+        _ou.error('Batch insert failed. The `catalog` command has likely already been executed. Try using the `record` command instead.')
+
+
 @click.command('record', short_help='fetch and store latest tweets')
 def record():
     '''
@@ -52,37 +92,42 @@ def record():
     statuses = list(reversed(_api.GetUserTimeline(screen_name=_twitter_config['screen_name'])))
     new_tweets = False
 
-
     for status in statuses:
-        # Use the tweet id as the mongodb collection _id. This assumes we never 
-        # get a duplicate tweet id. 
-        tweet = {
-            '_id': status.id_str,
-            'created_at': status.created_at,
-            'full_text': status.full_text,
-            'favorite_count': status.favorite_count,
-            'retweet_count': status.retweet_count,
-            'hashtags': [hashtag.text for hashtag in status.hashtags],
-            'source': status.source,
-            'urls': [{'expanded_url': url.expanded_url, 'url': url.url} for url in status.urls],
-            'user_mentions': [{'id': user.id, 'screen_name': user.screen_name} for user in status.user_mentions]
-        }
-
-        # If this is a retweet, just store the ID. The original tweet can be
-        # looked up later if needed.
-        if status.retweeted_status:
-            tweet['retweeted_status'] = {}
-            tweet['retweeted_status']['id'] = status.retweeted_status.id_str
+        tweet = prepare_tweet(status)
 
         try:
             _db_tweets.insert_one(tweet)
             new_tweets = True
-            print(f'Good news, Donnie just shed some new wisdom on {status.created_at}!')
+            _ou.info(f'Good news, Donnie just shed some new wisdom on {status.created_at}!')
         except pymongo.errors.DuplicateKeyError as e:
             pass
 
     if not new_tweets:
-        print('No new insight from The Tweeter in Chief...')
+        _ou.warning('No new insight from The Tweeter in Chief...')
+
+
+def prepare_tweet(status):
+    # Use the tweet id as the mongodb collection _id. This assumes we never 
+    # get a duplicate tweet id. 
+    tweet = {
+        '_id': status.id_str,
+        'created_at': status.created_at,
+        'full_text': status.full_text,
+        'favorite_count': status.favorite_count,
+        'retweet_count': status.retweet_count,
+        'hashtags': [hashtag.text for hashtag in status.hashtags],
+        'source': status.source,
+        'urls': [{'expanded_url': url.expanded_url, 'url': url.url} for url in status.urls],
+        'user_mentions': [{'id': user.id, 'screen_name': user.screen_name} for user in status.user_mentions]
+    }
+
+    # If this is a retweet, just store the ID. The original tweet can be
+    # looked up later if needed.
+    if status.retweeted_status:
+        tweet['retweeted_status'] = {}
+        tweet['retweeted_status']['id'] = status.retweeted_status.id_str
+
+    return tweet
 
 
 @click.command('playback', short_help='print all stored tweets')
@@ -136,14 +181,15 @@ def frequency():
 
     best_words = sorted(best_words.items(), key=itemgetter(1), reverse=False)
 
-    print(f'@{_twitter_config["screen_name"]} really does have the best words!')
-    print('Here are his most frequent:')
+    _ou.info(f'@{_twitter_config["screen_name"]} really does have the best words!')
+    _ou.info('Here are his most frequent:')
     
     for word_info in best_words:
         print(f'{word_info[0]: <{largest_word_length}} {word_info[1]}')
 
 
 # Setup available commands
+cli.add_command(catalog)
 cli.add_command(record)
 cli.add_command(playback)
 cli.add_command(frequency)
