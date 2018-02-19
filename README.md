@@ -17,6 +17,7 @@ Commands:
   frequency  get unique word counts
   playback   print all stored tweets
   record     fetch and store latest tweets
+  search     searches tweets for usage of a word or phrase
 ```
 
 ## Meaning of 'trumppet'
