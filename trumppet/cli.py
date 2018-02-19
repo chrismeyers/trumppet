@@ -80,7 +80,7 @@ def frequency():
         print(f'{word_info[0]: <{largest_word_length}} {word_info[1]}')
 
 
-@click.command('search', short_help='searches tweets for usage of a word or phrase ')
+@click.command('search', short_help='searches tweets for usage of a word or phrase')
 @click.option('--phrase', nargs=1, help="the search query")
 def search(phrase):
     '''
@@ -94,12 +94,24 @@ def search(phrase):
             print(f'[{tweet["created_at"]}] {tweet["full_text"]}\n')
 
 
+@click.command('freestyle', short_help='generates a tweet that Trump posted...probably')
+def freestyle():
+    '''
+    Generates a Trumpian-style tweet (Sentance. Sentance. Exclamation!) based on
+    past tweets
+    '''
+
+    _ou.info('At some point, Donald Trump probably said...')
+    print(_analyzer.generate_trumpian_tweet())
+
+
 # Setup available commands
 cli.add_command(catalog)
 cli.add_command(record)
 cli.add_command(playback)
 cli.add_command(frequency)
 cli.add_command(search)
+cli.add_command(freestyle)
 
 
 if __name__ == "__main__":

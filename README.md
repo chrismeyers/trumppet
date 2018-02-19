@@ -14,6 +14,7 @@ Options:
 
 Commands:
   catalog    fetch and store all possible tweets
+  freestyle  generates a tweet that Trump posted...probably
   frequency  get unique word counts
   playback   print all stored tweets
   record     fetch and store latest tweets

@@ -3,11 +3,15 @@ import string
 import re
 import html
 from operator import itemgetter
+import random
+import nltk
 from mcgpyutils import ColorUtils as colors
+from mcgpyutils import FileSystemUtils
 
 class TweetAnalyzer:
     def __init__(self, storage):
         self.storage = storage
+        self.fsu = FileSystemUtils()
 
 
     def get_word_frequency(self):
@@ -59,3 +63,23 @@ class TweetAnalyzer:
                 })
 
         return found_tweets
+
+
+    def generate_trumpian_tweet(self):
+        real_tweets = list(self.storage.get_all_tweets())
+        tokenizer = nltk.data.load(f'{self.fsu.get_path_to_script(__file__)}/nltk_data/tokenizers/punkt/english.pickle')
+
+        tweets = []
+        selected_indexes = []
+        while len(tweets) < 3:
+            tweet_index = -1
+            while (tweet_index < 0) or (tweet_index in selected_indexes) or ('retweeted_status' in real_tweets[tweet_index]):
+                tweet_index = random.randrange(0, len(real_tweets) - 1)
+
+            selected_indexes.append(tweet_index)
+            sentences = tokenizer.tokenize(real_tweets[tweet_index]['full_text'])
+
+            if(len(sentences) == 3 and sentences[0][-1] == '.' and sentences[1][-1] == '.' and sentences[2][-1] == '!'):
+                tweets.append(sentences)
+
+        return f'{tweets[0][0]} {tweets[1][1]} {tweets[2][2]}'
