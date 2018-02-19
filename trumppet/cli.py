@@ -80,11 +80,26 @@ def frequency():
         print(f'{word_info[0]: <{largest_word_length}} {word_info[1]}')
 
 
+@click.command('search', short_help='searches tweets for usage of a word or phrase ')
+@click.option('--phrase', nargs=1, help="the search query")
+def search(phrase):
+    '''
+    Searches tweets for usage of a word or phrase
+    '''
+
+    if phrase:
+        tweets = _analyzer.search_tweets(phrase)
+        _ou.info(f'{len(tweets)} results for the term "{phrase}":')
+        for tweet in tweets:
+            print(f'[{tweet["created_at"]}] {tweet["full_text"]}\n')
+
+
 # Setup available commands
 cli.add_command(catalog)
 cli.add_command(record)
 cli.add_command(playback)
 cli.add_command(frequency)
+cli.add_command(search)
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ import string
 import re
 import html
 from operator import itemgetter
+from mcgpyutils import ColorUtils as colors
 
 class TweetAnalyzer:
     def __init__(self, storage):
@@ -44,3 +45,17 @@ class TweetAnalyzer:
                     best_words[word] = 1
 
         return sorted(best_words.items(), key=itemgetter(1), reverse=False), largest_word_length
+
+
+    def search_tweets(self, phrase):
+        found_tweets = []
+
+        for tweet in self.storage.get_all_tweets():
+            if re.search(phrase, tweet['full_text'], re.IGNORECASE):
+                found_text = re.sub(phrase, f'{colors.RED}\g<0>{colors.RETURN_TO_NORMAL}', tweet['full_text'], 0, re.IGNORECASE)
+                found_tweets.append({
+                    'created_at': tweet['created_at'],
+                    'full_text': found_text
+                })
+
+        return found_tweets
