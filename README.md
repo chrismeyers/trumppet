@@ -1,7 +1,7 @@
 # trumppet
 trumppet periodically retrieves tweets from Donald Trump 
 ([@realDonaldTrump](https://twitter.com/realDonaldTrump)) and stores the data in
-a MongoDB database. Analysis is then performed on this data.
+a MongoDB database. Linguistic analysis is then performed on this data.
 
 ## Usage
 This project is comprised of three components: trumppet-client, trumppet-server,
@@ -18,7 +18,8 @@ Options:
   -h, --help  Show this message and exit.
 
 Commands:
-  freestyle  generates a tweet that Trump posted...probably
+  freestyle  generates a Trumpian-style tweet: Sentance. Sentance.
+             Exclamation! (NOTE: these tweets are not real)
   frequency  get unique word counts
   playback   prints previous tweets
   search     searches tweets for usage of a word or phrase

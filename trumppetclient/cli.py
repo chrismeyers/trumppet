@@ -107,7 +107,7 @@ def search(phrase):
         print(f'[{tweet["created_at"]}] {tweet["full_text"]}\n')
 
 
-@click.command('freestyle', short_help='generates a tweet that Trump posted...probably')
+@click.command('freestyle', short_help='generates a Trumpian-style tweet: Sentance. Sentance. Exclamation! (NOTE: these tweets are not real)')
 def freestyle():
     '''
     Generates a Trumpian-style tweet (Sentance. Sentance. Exclamation!) based on
@@ -122,7 +122,7 @@ def freestyle():
 
     fake_news = r.json()
 
-    _ou.info('At some point, Donald Trump probably said (this actually is fake news)...')
+    _ou.info('At some point, Donald Trump probably said (this tweet is not real, it actually is fake news)...')
     print(fake_news['fake_tweet'])
 
 
