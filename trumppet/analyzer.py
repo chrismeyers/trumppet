@@ -2,9 +2,9 @@ import sys
 import string
 import re
 import html
-from operator import itemgetter
 import random
 import nltk
+from operator import itemgetter
 from mcgpyutils import ColorUtils as colors
 from mcgpyutils import FileSystemUtils
 

@@ -1,4 +1,3 @@
-import twitter
 import click
 from mcgpyutils import FileSystemUtils
 from mcgpyutils import ConfigUtils
@@ -8,6 +7,7 @@ from .storage import TweetStorage
 from .analyzer import TweetAnalyzer
 from .__version__ import __version__
 
+
 _ou = OutputUtils()
 _fsu = FileSystemUtils()
 _config = ConfigUtils()
@@ -16,14 +16,7 @@ _fsu.set_config_location(f'{_fsu.get_path_to_script(__file__)}/config')
 _config.parse_json_config(f'{_fsu.get_config_location()}/trumppet_config.json')
 _twitter_config = _config.get_json_config_field('twitter')
 
-_api = twitter.Api(consumer_key=_twitter_config['consumer_key'],
-                   consumer_secret=_twitter_config['consumer_secret'],
-                   access_token_key=_twitter_config['access_token'],
-                   access_token_secret=_twitter_config['access_token_secret'],
-                   tweet_mode='extended',
-                   sleep_on_rate_limit=True)
-
-_storage = TweetStorage(_config, _api)
+_storage = TweetStorage(_config)
 _analyzer = TweetAnalyzer(_storage)
 
 

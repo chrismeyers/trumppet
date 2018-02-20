@@ -1,16 +1,22 @@
+import twitter
 import pymongo
 from mcgpyutils import OutputUtils
 
 class TweetStorage:
-    def __init__(self, config, api):
-        self.api = api
-
+    def __init__(self, config):
         self.mongodb_config = config.get_json_config_field('mongodb')
         self.twitter_config = config.get_json_config_field('twitter')
 
         mongodb = pymongo.MongoClient(self.mongodb_config['server'], self.mongodb_config['port'])
         db = mongodb[self.mongodb_config['db']]
         self.db_tweets = db[self.mongodb_config["collection"]]
+
+        self.api = twitter.Api(consumer_key=self.twitter_config['consumer_key'],
+                               consumer_secret=self.twitter_config['consumer_secret'],
+                               access_token_key=self.twitter_config['access_token'],
+                               access_token_secret=self.twitter_config['access_token_secret'],
+                               tweet_mode='extended',
+                               sleep_on_rate_limit=True)
 
         self.ou = OutputUtils()
         
