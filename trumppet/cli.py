@@ -3,6 +3,7 @@ import click
 from mcgpyutils import FileSystemUtils
 from mcgpyutils import ConfigUtils
 from mcgpyutils import OutputUtils
+from mcgpyutils import ColorUtils as colors
 from .storage import TweetStorage
 from .analyzer import TweetAnalyzer
 from .__version__ import __version__
@@ -27,12 +28,16 @@ _analyzer = TweetAnalyzer(_storage)
 
 
 @click.group(invoke_without_command=True, context_settings=dict(help_option_names=['-h', '--help']))
+@click.version_option(prog_name=f'{colors.RED}tr{colors.WHITE}ump{colors.BLUE}pet{colors.RETURN_TO_NORMAL}', version=__version__)
 @click.pass_context
 def cli(context):
     '''
     Donald Trump tweet analyzer
     '''
-    pass
+    
+    # Show help if no command was specified.
+    if context.invoked_subcommand is None:
+        click.echo(context.get_help())
 
 
 @click.command('catalog', short_help='fetch and store all possible tweets')
