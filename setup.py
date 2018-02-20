@@ -1,20 +1,13 @@
 from setuptools import setup, find_packages
-import os
 import sys
 
 if sys.version_info < (3, 6):
     print('trumppet requires python3 version >= 3.6.')
     sys.exit(1)
 
-here = os.path.abspath(os.path.dirname(__file__))
-
-about = {}
-with open(os.path.join(here, "trumppet", "__version__.py")) as f:
-    exec(f.read(), about)
-
 setup(
     name='trumppet',
-    version=about['__version__'],
+    version="0.0.1",
     description='Donald Trump tweet analyzer',
     url='https://github.com/chrismeyers/trumppet',
     author='Chris Meyers',
@@ -23,7 +16,8 @@ setup(
     packages=find_packages(exclude=['tests']),
     entry_points={
         'console_scripts': [
-            'trumppet=trumppet:cli'
+            'trumppet-client=trumppetclient:cli',
+            'trumppet-server=trumppetserver:cli'
         ],
     },
     install_requires=[

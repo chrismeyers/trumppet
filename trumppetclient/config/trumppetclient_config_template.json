@@ -1,0 +1,8 @@
+{
+  "trumppetserver": {
+    "base_url" : {
+      "default": "http://localhost:5000",
+      "custom": "http://localhost:5000"
+    }
+  }
+}

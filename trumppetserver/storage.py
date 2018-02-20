@@ -1,9 +1,18 @@
 import twitter
 import pymongo
+from mcgpyutils import FileSystemUtils
+from mcgpyutils import ConfigUtils
 from mcgpyutils import OutputUtils
 
 class TweetStorage:
-    def __init__(self, config):
+    def __init__(self):
+        self.ou = OutputUtils()
+        fsu = FileSystemUtils()
+        config = ConfigUtils()
+
+        fsu.set_config_location(f'{fsu.get_path_to_script(__file__)}/config')
+        config.parse_json_config(f'{fsu.get_config_location()}/trumppetserver_config.json')
+
         self.mongodb_config = config.get_json_config_field('mongodb')
         self.twitter_config = config.get_json_config_field('twitter')
 
@@ -18,7 +27,6 @@ class TweetStorage:
                                tweet_mode='extended',
                                sleep_on_rate_limit=True)
 
-        self.ou = OutputUtils()
         
 
     def get_all_tweets(self):
@@ -69,7 +77,7 @@ class TweetStorage:
             try:
                 self.db_tweets.insert_one(tweet)
                 new_tweets = True
-                self.ou.info(f'Good news, Donnie just shed some new wisdom on {status.created_at}!')
+                self.ou.info(f'Good news, President Trump just shed some new wisdom on {status.created_at}!')
             except pymongo.errors.DuplicateKeyError as e:
                 pass
 
