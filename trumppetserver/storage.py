@@ -68,8 +68,12 @@ class TweetStorage:
 
 
     def record_new_tweets(self):
-        statuses = list(reversed(self.api.GetUserTimeline(screen_name=self.twitter_config['screen_name'])))
+        tweets_per_call = 200
         new_tweets = False
+
+        timeline = self.api.GetUserTimeline(screen_name=self.twitter_config['screen_name'],
+                                            count=tweets_per_call)
+        statuses = list(reversed(timeline))
 
         for status in statuses:
             tweet = self._prepare_tweet(status)
