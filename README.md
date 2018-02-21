@@ -79,7 +79,7 @@ needs to be set to the location of the local server (probably `http://localhost:
 
 To configure an hourly cron job, use the following command:
 ```
-0 * * * * export PATH="/python/user/base/directory/bin:$PATH"; export LANG="en_US.UTF-8"; /path/to/trumppet/bin/trumppetServerWrapper.sh record >> /path/to/log 2>&1
+0 * * * * export PATH="/python/user/base/directory/bin:$PATH"; export LANG="en_US.UTF-8"; echo `date` >> /path/to/log 2>&1; /path/to/trumppet/bin/trumppetServerWrapper.sh record >> /path/to/log 2>&1
 ```
 
 ## Meaning of 'trumppet'
