@@ -5,7 +5,7 @@ a MongoDB database. Linguistic analysis is then performed on this data.
 
 ## Usage
 This project is comprised of three components: trumppet-client, trumppet-server,
-and a Flask RESTful API connecting the two.
+and a Flask REST API connecting the two.
 
 ```
 Usage: trumppet-client [OPTIONS] COMMAND [ARGS]...
@@ -41,7 +41,7 @@ Commands:
   record   fetch and store latest tweets
 ```
 
-API Endpoints
+**API Endpoints**
 
 | HTTP Method    | URI               | Action                                 |
 | -------------- | ----------------- | -------------------------------------- |
@@ -59,29 +59,109 @@ API Endpoints
 Create a virtual environment and install dependencies by running `pipenv install`
 from the root of the project.
 
+### Client Setup
 Copy and configure the following files:
 ```
 cp trumppetclient/config/trumppetclient_config_template.json trumppetclient/config/trumppetclient_config.json
-cp trumppetserver/config/trumppetserver_config_template.json trumppetserver/config/trumppetserver_config.json
 ```
-NOTE: `trumppetserver_config.json` only needs to be configured if  MongoDB is
-running locally.
 
 Invoke the client by running `pipenv run trumppet-client ...` from within the
 project, or `bin/trumppetClientWrapper.sh ...` from anywhere.  
 
-Invoke the server by running `pipenv run trumppet-server ...` from within the
-project, or `bin/trumppetServerWrapper.sh ...` from anywhere.  NOTE: If a local
-MongoDB instance is being used, the Flask API needs to be started by running
-`pipenv run python3 trumppetserver/api.py` from within the project.  Also, the
-`trumppetserver -> base_url -> custom ` field in `truppetclient/config/trumppetclient_config.json`
-needs to be set to the location of the local server (probably `http://localhost:5000`)
+### (Optional) Server Configuration
+Copy and configure the following files:
+```
+cp trumppetserver/config/trumppetserver_config_template.json trumppetserver/config/trumppetserver_config.json
+```
 
-To configure an hourly cron job, use the following command:
+Invoke the server by running `pipenv run trumppet-server ...` from within the
+project, or `bin/trumppetServerWrapper.sh ...` from anywhere.  
+
+Now, the Flask API server needs to be configured:
+* For development, a local Flask server can be used by running `pipenv run python3 trumppetserver/api.py`
+  from within the project.  Make sure the `trumppetserver -> base_url -> custom `
+  field in `truppetclient/config/trumppetclient_config.json` is set to the
+  location of the custom Flask server (probably `http://localhost:5000`)
++ For production, the Flask server can be tied to Apache through mod_wsgi.  Make
+  sure the version of mod_wsgi is configured for Python 3.  For Ubuntu, it's
+  easier to build and install Python and mod_wsgi from source.  These directions
+  are based on Ubuntu server 16.04.
+  * First, [build and install Python](https://solarianprogrammer.com/2017/06/30/building-python-ubuntu-wsl-debian/)<sup>1</sup>
+    (replace Python versions with latest) using `./configure --enable-shared --enable-optimizations`.
+  + Then, [build and install mod_wsgi](http://modwsgi.readthedocs.io/en/develop/user-guides/quick-installation-guide.html)<sup>2</sup>
+    using `./configure --with-python=/path/to/python3`.
+    * More information about configuring mod_wsgi with virtual environments
+      can be found [here](http://modwsgi.readthedocs.io/en/develop/user-guides/virtual-environments.html).
+  + Enable mod_wsgi:
+    * Run: `sudo echo LoadModule wsgi_module /usr/lib/apache2/modules/mod_wsgi.so > /etc/apache2/mods-available/mod_wsgi.load`
+    * Run: `sudo a2enmod mod_wsgi`
+  * Add a virtual host entry in the file `/etc/apache2/sites-available/VHOST_NAME.conf`:
 ```
-0 * * * * export PATH="/python/user/base/directory/bin:$PATH"; export LANG="en_US.UTF-8"; echo `date` >> /path/to/log 2>&1; /path/to/trumppet/bin/trumppetServerWrapper.sh record >> /path/to/log 2>&1
+<VirtualHost *:80>
+  ...
+
+  ServerName api.website.com
+
+  WSGIDaemonProcess WSGI_HANDLE python-home=/path/to/virtualenvs/trumppet-XXXXXXX
+  WSGIScriptAlias / /path/to/trumppet/trumppetserver/wsgi.py
+
+  <Directory /path/to/trumppet/trumppetserver>
+      WSGIProcessGroup WSGI_HANDLE
+      WSGIApplicationGroup %{GLOBAL}
+      Require all granted
+  </Directory>
+
+  ...
+</VirtualHost>
 ```
+  * Enable the new virtual host by running `sudo a2ensite VHOST_NAME.conf`
+  + Finally, test the Apache config (`sudo apachectl -t`), then restart Apache (`sudo apachectl restart`).
+    * NOTE: Whenever there are changes to the server code, Apache needs to be restarted.
+
+### Cron Setup
+To configure a cron job that runs every 15 minutes, use the following command:
+```
+*/15 * * * * export PATH="/python/user/base/directory/bin:$PATH"; export LANG="en_US.UTF-8"; echo `date` >> /path/to/log 2>&1; /path/to/trumppet/bin/trumppetServerWrapper.sh record >> /path/to/log 2>&1
+```
+NOTE: The python user base directory can be located by running `python3 -m site --user-base`.
 
 ## Meaning of 'trumppet'
 trumppet stands for trump-puppet. Trumpet also works because, like the musical
 instrument, President Trump often just makes noise and is full of hot air.
+
+## Additional Information
+<sup>1</sup> Python build instructions:
+```
+sudo apt-get update
+sudo apt-get upgrade
+
+sudo apt-get install build-essential
+
+sudo apt-get install libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev libreadline-dev libsqlite3-dev 
+sudo apt-get install libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev tk-dev
+
+wget https://www.python.org/ftp/python/X.Y.Z/Python-X.Y.Z.tar.xz
+tar xf Python-X.Y.Z.tar.xz
+cd Python-X.Y.Z
+./configure --enable-shared --enable-optimizations
+make -j 8
+sudo make install
+
+# If there are errors running 'python3 --version' run:
+sudo ln -s /usr/local/lib/libpython3.6m.so.1.0 /usr/lib/libpython3.6m.so.1.0
+```
+
+<sup>2</sup> mod_wsgi build instructions:
+```
+wget https://github.com/GrahamDumpleton/mod_wsgi/archive/X.Y.Z.tar.gz
+mv X.Y.Z.tar.gz mod_wsgi-X.Y.Z.tar.gz
+tar xvfz mod_wsgi-X.Y.Z.tar.gz
+
+cd mod_wsgi-X.Y.Z
+./configure --with-python=/path/to/python3
+make
+make install
+
+# If there are build errors, try installing:
+sudo apt-get install apache2-dev
+```

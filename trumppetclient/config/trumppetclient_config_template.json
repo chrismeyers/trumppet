@@ -1,7 +1,7 @@
 {
   "trumppetserver": {
     "base_url" : {
-      "default": "http://localhost:5000",
+      "default": "http://api.trumppetapp.com",
       "custom": ""
     }
   }
