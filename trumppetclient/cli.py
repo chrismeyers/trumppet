@@ -86,7 +86,8 @@ def frequency():
 
 @click.command('search', short_help='searches tweets for usage of a word or phrase')
 @click.option('--phrase', required=True, nargs=1, help="the search query")
-def search(phrase):
+@click.option('--count', is_flag=True, help="only displays the number of occurances")
+def search(phrase, count=False):
     '''
     Searches tweets for usage of a word or phrase
     '''
@@ -103,8 +104,9 @@ def search(phrase):
     tweets = r.json()
 
     _ou.info(f'{len(tweets)} results for the term "{phrase}":')
-    for tweet in tweets:
-        print(f'[{tweet["created_at"]}] {tweet["full_text"]}\n')
+    if not count:
+        for tweet in tweets:
+            print(f'[{tweet["created_at"]}] {tweet["full_text"]}\n')
 
 
 @click.command('freestyle', short_help='generates a Trumpian-style tweet: Sentance. Sentance. Exclamation! (NOTE: these tweets are not real)')
