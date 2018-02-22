@@ -69,17 +69,28 @@ class TweetAnalyzer:
         real_tweets = list(self.storage.get_all_tweets())
         tokenizer = nltk.data.load(f'{self.fsu.get_path_to_script(__file__)}/nltk_data/tokenizers/punkt/english.pickle')
 
-        tweets = []
+        selected_tweets = []
+        original_tweets = []
         selected_indexes = []
-        while len(tweets) < 3:
+        while len(selected_tweets) < 3:
             tweet_index = -1
+
+            # Prevent getting the same tweet more than once.
             while (tweet_index < 0) or (tweet_index in selected_indexes) or ('retweeted_status' in real_tweets[tweet_index]):
                 tweet_index = random.randrange(0, len(real_tweets) - 1)
 
             selected_indexes.append(tweet_index)
             sentences = tokenizer.tokenize(real_tweets[tweet_index]['full_text'])
 
-            if(len(sentences) == 3 and sentences[0][-1] == '.' and sentences[1][-1] == '.' and sentences[2][-1] == '!'):
-                tweets.append(sentences)
+            # Make sure the tweet follows the following rules:
+            #   1) 3 sentences
+            #   2) Doesn't start with a period
+            #   3) Sentence 1 ends with a period, Sentence 2 ends with a period,
+            #      and sentence 3 ends with an exclamation.
+            if(len(sentences) == 3 and 
+               sentences[0][0] != '.' and
+               sentences[0][-1] == '.' and sentences[1][-1] == '.' and sentences[2][-1] == '!'):
+                selected_tweets.append(sentences)
+                original_tweets.append(real_tweets[tweet_index])
 
-        return f'{tweets[0][0]} {tweets[1][1]} {tweets[2][2]}'
+        return f'{selected_tweets[0][0]} {selected_tweets[1][1]} {selected_tweets[2][2]}', original_tweets

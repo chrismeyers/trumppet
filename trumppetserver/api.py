@@ -71,8 +71,10 @@ def freestyle():
     Gets a fake Trumpian-style tweet
     '''
 
+    fake_tweet, original_tweets = _analyzer.generate_trumpian_tweet()
     data = {
-        "fake_tweet": _analyzer.generate_trumpian_tweet() 
+        "fake_tweet": fake_tweet,
+        "original_tweets": original_tweets
     }
 
     return Response(json.dumps(data), mimetype='application/json')
