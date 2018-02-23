@@ -4,8 +4,8 @@ trumppet periodically retrieves tweets from Donald Trump
 a MongoDB database. Linguistic analysis is then performed on this data.
 
 ## Usage
-This project is comprised of three components: trumppet-client, trumppet-server,
-and a Flask REST API connecting the two.
+This project is comprised of four components: trumppet-client, trumppet-server,
+a Flask REST API connecting the two, and a website.
 
 ```
 Usage: trumppet-client [OPTIONS] COMMAND [ARGS]...
