@@ -2,14 +2,15 @@ import json
 from flask import Flask
 from flask import request
 from flask import Response
-from storage import TweetStorage
-from analyzer import TweetAnalyzer
+from trumppetserver import TweetStorage
+from trumppetserver import TweetAnalyzer
 
 
 _storage = TweetStorage()
-_analyzer = TweetAnalyzer(_storage)
+_analyzer = TweetAnalyzer()
 
 _app = Flask(__name__)
+
 
 '''
 API Endpoints

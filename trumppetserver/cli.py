@@ -2,13 +2,11 @@ import click
 from mcgpyutils import OutputUtils
 from mcgpyutils import ColorUtils as colors
 from .storage import TweetStorage
-from .analyzer import TweetAnalyzer
 from .__version__ import __version__
 
 
 _ou = OutputUtils()
 _storage = TweetStorage()
-_analyzer = TweetAnalyzer(_storage)
 
 
 @click.group(invoke_without_command=True, context_settings=dict(help_option_names=['-h', '--help']))

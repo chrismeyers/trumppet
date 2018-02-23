@@ -7,10 +7,11 @@ import nltk
 from operator import itemgetter
 from mcgpyutils import ColorUtils as colors
 from mcgpyutils import FileSystemUtils
+from trumppetserver import TweetStorage
 
 class TweetAnalyzer:
-    def __init__(self, storage):
-        self.storage = storage
+    def __init__(self):
+        self.storage = TweetStorage()
         self.fsu = FileSystemUtils()
 
 
