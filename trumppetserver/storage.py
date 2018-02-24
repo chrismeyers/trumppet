@@ -37,8 +37,12 @@ class TweetStorage:
         return self.db_tweets.find().sort("_id", pymongo.ASCENDING)
 
 
-    def get_first_tweet(self):
-        return self.db_tweets.find_one()
+    def get_oldest_tweet(self):
+        return self.db_tweets.find_one(sort=[('_id', 1)])
+
+
+    def get_newest_tweet(self):
+        return self.db_tweets.find_one(sort=[('_id', -1)])
 
 
     def get_num_tweets(self):

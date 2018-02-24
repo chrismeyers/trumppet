@@ -14,7 +14,7 @@ _analyzer = TweetAnalyzer()
 
 @_app.route("/", methods=["GET"])
 def index():
-    start_date =_storage.get_first_tweet()['created_at']
+    start_date =_storage.get_oldest_tweet()['created_at']
     ts = time.strftime('%B %d, %Y', time.strptime(start_date,'%a %b %d %H:%M:%S +0000 %Y'))
     return render_template('index.html', num_tweets=_storage.get_num_tweets(), start_date=ts)
 
