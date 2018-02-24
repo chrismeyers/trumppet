@@ -125,6 +125,16 @@ To configure a cron job that runs every 15 minutes, use the following command:
 ```
 NOTE: The python user base directory can be located by running `python3 -m site --user-base`.
 
+### MongoDB Authentication
+Authentication can be enabled by adding the following to the mongodb.conf:
+```
+security:
+  authorization: enabled
+```
+User creation instructions can be found [here](https://docs.mongodb.com/manual/tutorial/enable-authentication/).
+
+Make sure `trumppetserver/config/trumppetserver_config.json` is configured.
+
 ## Meaning of 'trumppet'
 trumppet stands for trump-puppet. Trumpet also works because, like the musical
 instrument, President Trump often just makes noise and is full of hot air.

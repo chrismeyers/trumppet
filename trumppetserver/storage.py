@@ -16,7 +16,11 @@ class TweetStorage:
         self.mongodb_config = config.get_json_config_field('mongodb')
         self.twitter_config = config.get_json_config_field('twitter')
 
-        mongodb = pymongo.MongoClient(self.mongodb_config['server'], self.mongodb_config['port'])
+        mongodb = pymongo.MongoClient(host=self.mongodb_config['server'],
+                                      port=self.mongodb_config['port'],
+                                      authSource=self.mongodb_config['db'],
+                                      username=self.mongodb_config['user'],
+                                      password=self.mongodb_config['pass'])
         db = mongodb[self.mongodb_config['db']]
         self.db_tweets = db[self.mongodb_config["collection"]]
 
