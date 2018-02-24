@@ -1,17 +1,31 @@
 {% include 'header.html' %}
 {% include 'nav.html' %}
 
-<form action="/search" method="POST">
-  <span>Is the phrase </span></span><input type="text" name="phrase"><span> in Donald Trump's tweets?</span>
-  <input type="submit" value="Go"></button>
-</form>
+<body>
+  <div class="flex-container">
+    <div class="row">
+      <div class="large-font flex-container">
+        <form action="/search" method="POST">
+          <span>Has "</span></span><input type="text" name="phrase"><span>" been used in Donald Trump's tweets?</span>
+          <input class="button" type="submit" value="Check"></button>
+        </form>
+      </div>
 
-{% if results %}
-  {% if phrase %}
-    <p>{{ results | length }} results for the term "{{ phrase }}":</p>
-  {% endif %}
+      <div class="flex-container flex-search">
+        {% if results %}
+          {% if phrase %}
+            <p>Yes, the phrase "{{ phrase }}" was used in {{ results | length }} tweets:</p>
+          {% endif %}
 
-  {% for tweet in results %}
-    <p><a href="https://twitter.com/statuses/{{ tweet['_id'] }}" target="_blank">[{{ tweet['created_at'] }}]</a> {{ tweet['full_text'] | replace('\033[1;31m', '<span class="match">') | replace('\033[0m', '</span>') | safe }}</p>
-  {% endfor %}
-{% endif %}
+          {% for tweet in results %}
+            <p class="tweet"><a href="https://twitter.com/statuses/{{ tweet['_id'] }}" target="_blank">[{{ tweet['created_at'] }}]</a> {{ tweet['full_text'] | replace('\033[1;31m', '<span class="match">') | replace('\033[0m', '</span>') | safe }}</p>
+          {% endfor %}
+        {% else %}
+          {% if phrase %}
+            <p>No, the phrase "{{ phrase }}" was not used in any tweets.</p>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</body>

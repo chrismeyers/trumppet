@@ -37,6 +37,10 @@ class TweetStorage:
         return self.db_tweets.find().sort("_id", pymongo.ASCENDING)
 
 
+    def get_first_tweet(self):
+        return self.db_tweets.find_one()
+
+
     def get_num_tweets(self):
         return len(list(self.get_all_tweets()))
 

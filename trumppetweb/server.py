@@ -1,4 +1,5 @@
 import json
+import time
 from flask import Flask
 from flask import request
 from flask import render_template
@@ -13,7 +14,9 @@ _analyzer = TweetAnalyzer()
 
 @_app.route("/", methods=["GET"])
 def index():
-    return render_template('index.html')
+    start_date =_storage.get_first_tweet()['created_at']
+    ts = time.strftime('%B %d, %Y', time.strptime(start_date,'%a %b %d %H:%M:%S +0000 %Y'))
+    return render_template('index.html', num_tweets=_storage.get_num_tweets(), start_date=ts)
 
 
 @_app.route("/playback", methods=["GET", "POST"])
@@ -31,7 +34,7 @@ def playback():
 @_app.route("/frequency", methods=["GET"])
 def frequency():
     best_words, largest_word_length = _analyzer.get_word_frequency()
-    return render_template('frequency.html', best_words=reversed(best_words))
+    return render_template('frequency.html', best_words=list(reversed(list(best_words))))
 
 
 @_app.route("/search", methods=["GET", "POST"])
@@ -41,8 +44,8 @@ def search():
 
     if request.method == 'POST':
         data = request.form
-        phrase = data['phrase']
-        results = list(reversed(list(_analyzer.search_tweets(data['phrase']))))
+        phrase = data['phrase'].strip()
+        results = list(reversed(list(_analyzer.search_tweets(phrase))))
 
     return render_template('search.html', phrase=phrase, results=results)
 

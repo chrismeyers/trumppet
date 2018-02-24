@@ -1,20 +1,25 @@
 {% include 'header.html' %}
 {% include 'nav.html' %}
 
-<p>
-  Mr. Trump really does have the best words!<br>
-  Here are his most frequent:
-</p>
+<body>
+  <div class="flex-container">
+    <div class="row">
+      <p class="large-font">Mr. Trump really does have the best words! Here are the {{ best_words | length }} unique words that have been used:</p>
 
-<table>
-  <tr>
-    <th>Word</th>
-    <th>Count</th>
-  </tr>
-  {% for word in best_words %}
-  <tr>
-    <td>{{ word[0] | safe }}</td>
-    <td>{{ word[1] }}</td>
-  </tr>
-  {% endfor %}
-</table>
+      <div class="flex-container large-font">
+        <table>
+          <tr>
+            <th>Word</th>
+            <th>Count</th>
+          </tr>
+          {% for word in best_words %}
+          <tr>
+            <td>{{ word[0] | safe }}</td>
+            <td class="count">{{ word[1] }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+</body>

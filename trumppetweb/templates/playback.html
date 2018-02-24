@@ -1,18 +1,22 @@
 {% include 'header.html' %}
 {% include 'nav.html' %}
 
-<div>
-  <div>
-    <form action="/playback" method="POST">
-      <span>Show Donald Trump's last </span>
-      <input type="text" name="num" placeholder="({{ num_tweets }} tweets stored)">
-      <span>tweets.</span>
-      <input type="submit" value="Go"></button>
-    </form>
-  </div>
+<body>
+  <div class="flex-container">
+    <div class="row">
+      <div class="flex-container large-font">
+        <form action="/playback" method="POST">
+          <span>Show Donald Trump's last </span>
+          <input class="input-text-playback" type="text" name="num" placeholder="({{ num_tweets }} tweets stored)">
+          <span>tweets.</span>
+          <input class="button" type="submit" value="Show"></button>
+        </form>
+      </div>
 
-  <p>Here are Donald Trump's last {{ tweets | length }} tweets: </p>
-  {% for tweet in tweets %}
-    <p><a href="https://twitter.com/statuses/{{ tweet['_id'] }}" target="_blank">[{{ tweet['created_at'] }}]</a> {{ tweet['full_text'] | safe }}</p>
-  {% endfor %}
-</div>
+      <p>Here are the last <b>{{ tweets | length }}</b> tweets: </p>
+      {% for tweet in tweets %}
+        <p>[<a href="https://twitter.com/statuses/{{ tweet['_id'] }}" target="_blank">{{ tweet['created_at'] }}</a>] {{ tweet['full_text'] | safe }}</p>
+      {% endfor %}
+    </div>
+  </div>
+</body>

@@ -1,9 +1,14 @@
 {% include 'header.html' %}
 
-<div class="centered">
-    <p><a class="fancytxt" href="/playback">Playback</a></p>
-    <p><a class="fancytxt" href="/frequency">Frequency</a></p>
-    <p><a class="fancytxt" href="/search">Search</a></p>
-    <p><a class="fancytxt" href="/freestyle">Freestyle</a></p>
-    <p>Check out the <a class="fancytxt" href="https://github.com/chrismeyers/trumppet">GitHub repository</a> for more info.</p>
-</div>
+<body>
+  <div class="intro large-font flex-container">
+    <div class="row"> 
+      <div class="flex-item">Trumppet is an app that analyzes {{ num_tweets }} of Donald Trump's tweets from {{ start_date }} to today.</div>
+      <div class="flex-item"><a class="fancytxt" href="/playback">Playback</a></div>
+      <div class="flex-item"><a class="fancytxt" href="/frequency">Frequency</a></div>
+      <div class="flex-item"><a class="fancytxt" href="/search">Search</a></div>
+      <div class="flex-item"><a class="fancytxt" href="/freestyle">Freestyle</a></div>
+      <div class="flex-item">Check out the <a class="fancytxt" href="https://github.com/chrismeyers/trumppet" target="_blank">GitHub repository</a> for more info.</div>
+    </div>
+  </div>
+</body>
