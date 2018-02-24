@@ -30,12 +30,7 @@ def get_tweets(num):
     Return the last <num> tweets, max 50
     '''
 
-    num = 50 if int(num) > 50 else int(num)
-    num = num * -1
-
-    all_tweets = list(_storage.get_all_tweets())
-    last_n = all_tweets[int(num):]
-
+    last_n = _storage.get_last_n_tweets(num)
     return Response(json.dumps(last_n), mimetype='application/json')
 
 

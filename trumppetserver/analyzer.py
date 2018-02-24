@@ -39,6 +39,11 @@ class TweetAnalyzer:
             words = text.strip().split(' ')
 
             for word in words:
+                if word.startswith('-') or word.startswith('‘') or word.startswith('“'):
+                    word = word[1:]
+                if word.endswith('-') or word.endswith('’') or word.endswith('”'):
+                    word = word[-1]
+
                 if len(word) > largest_word_length:
                     largest_word_length = len(word)
 
@@ -55,10 +60,14 @@ class TweetAnalyzer:
     def search_tweets(self, phrase):
         found_tweets = []
 
+        if phrase.strip() == "":
+            return found_tweets
+
         for tweet in self.storage.get_all_tweets():
             if re.search(phrase, tweet['full_text'], re.IGNORECASE):
                 found_text = re.sub(phrase, f'{colors.RED}\g<0>{colors.RETURN_TO_NORMAL}', tweet['full_text'], 0, re.IGNORECASE)
                 found_tweets.append({
+                    '_id': tweet['_id'],
                     'created_at': tweet['created_at'],
                     'full_text': found_text
                 })

@@ -8,4 +8,4 @@ logging.basicConfig(stream=sys.stderr)
 fsu = FileSystemUtils()
 sys.path.insert(0, fsu.get_path_to_script(__file__))
 
-from index import _app as application
+from server import _app as application

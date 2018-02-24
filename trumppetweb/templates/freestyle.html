@@ -1,0 +1,14 @@
+{% include 'header.html' %}
+{% include 'nav.html' %}
+
+<p>At some point, Donald Trump probably said (this tweet is not real, it actually is fake news)...</p>
+<p>{{ trumpian_tweet | safe }}</p>
+
+<p>Original Tweets:</p>
+<div>
+{% for original in original_tweets %}
+  <p><a class="fancytxt" href="https://twitter.com/statuses/{{ original['_id'] }}" target="_blank">https://twitter.com/statuses/{{ original['_id'] }}</a></p>
+{% endfor %}
+</div>
+
+<button onClick="window.location.reload()">More Fake News!</button>

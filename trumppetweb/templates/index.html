@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<head>
-  <title>Trumppet - Donald Trump tweet analyzer</title>
-  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-</head>
+{% include 'header.html' %}
 
-<div class="coming-soon">  
-    <p>The trumppetapp.com website is coming soon!</p>
-    <p>Check out the <a href="https://github.com/chrismeyers/trumppet">GitHub repository</a> for more info.</p>
+<div class="centered">
+    <p><a class="fancytxt" href="/playback">Playback</a></p>
+    <p><a class="fancytxt" href="/frequency">Frequency</a></p>
+    <p><a class="fancytxt" href="/search">Search</a></p>
+    <p><a class="fancytxt" href="/freestyle">Freestyle</a></p>
+    <p>Check out the <a class="fancytxt" href="https://github.com/chrismeyers/trumppet">GitHub repository</a> for more info.</p>
 </div>

@@ -1,0 +1,17 @@
+{% include 'header.html' %}
+{% include 'nav.html' %}
+
+<form action="/search" method="POST">
+  <span>Is the phrase </span></span><input type="text" name="phrase"><span> in Donald Trump's tweets?</span>
+  <input type="submit" value="Go"></button>
+</form>
+
+{% if results %}
+  {% if phrase %}
+    <p>{{ results | length }} results for the term "{{ phrase }}":</p>
+  {% endif %}
+
+  {% for tweet in results %}
+    <p><a href="https://twitter.com/statuses/{{ tweet['_id'] }}" target="_blank">[{{ tweet['created_at'] }}]</a> {{ tweet['full_text'] | replace('\033[1;31m', '<span class="match">') | replace('\033[0m', '</span>') | safe }}</p>
+  {% endfor %}
+{% endif %}

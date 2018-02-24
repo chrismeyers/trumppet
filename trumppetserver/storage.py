@@ -33,6 +33,28 @@ class TweetStorage:
         return self.db_tweets.find().sort("_id", pymongo.ASCENDING)
 
 
+    def get_num_tweets(self):
+        return len(list(self.get_all_tweets()))
+
+
+    def get_last_n_tweets(self, num):
+        all_tweets = list(self.get_all_tweets())
+
+        if not isinstance(num, int) and not num.isdigit():
+            num = 20
+        elif int(num) < 0:
+            num = 1
+        elif int(num) > len(all_tweets):
+            num = len(all_tweets)
+        else:
+            num = int(num)
+        num = num * -1 # Get the latest tweets
+
+        last_n = all_tweets[int(num):]
+
+        return last_n
+
+
     def catalog_all_tweets(self):
         max_tweet_archive = 3200
         tweets_per_call = 200
