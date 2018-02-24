@@ -27,7 +27,7 @@ def playback():
         data = request.form
         num = data['num']
 
-    tweets = list(reversed(_storage.get_last_n_tweets(num)))
+    tweets = list(_storage.get_last_n_tweets(num))
     return render_template('playback.html', tweets=tweets, num_tweets=_storage.get_num_tweets())
 
 
