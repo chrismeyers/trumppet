@@ -135,10 +135,6 @@ User creation instructions can be found [here](https://docs.mongodb.com/manual/t
 
 Make sure `trumppetserver/config/trumppetserver_config.json` is configured.
 
-## Meaning of 'trumppet'
-trumppet stands for trump-puppet. Trumpet also works because, like the musical
-instrument, President Trump often just makes noise and is full of hot air.
-
 ## Additional Information
 <sup>1</sup> Python build instructions:
 ```
