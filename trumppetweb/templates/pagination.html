@@ -1,0 +1,1 @@
+<div class="large-font">{% if page > 1 %}<a class="plain-link" href="/{{ request.endpoint }}?page={{ page - 1 }}"><</a> {% endif %}Page {{ page }} of {{ num_pages }}{% if page < num_pages %} <a class="plain-link" href="/{{ request.endpoint }}?page={{ page + 1 }}">></a>{% endif %}</div>

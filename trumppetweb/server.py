@@ -1,4 +1,5 @@
 import json
+import math
 import time
 from flask import Flask
 from flask import request
@@ -11,6 +12,8 @@ _app = Flask(__name__)
 _storage = TweetStorage()
 _analyzer = TweetAnalyzer()
 
+_PER_PAGE = 20
+
 
 @_app.route("/", methods=["GET"])
 def index():
@@ -21,14 +24,26 @@ def index():
 
 @_app.route("/playback", methods=["GET", "POST"])
 def playback():
-    num = 20
+    page = request.args.get('page')
+    num_tweets = _storage.get_num_tweets()
+    num_pages = math.ceil(num_tweets / _PER_PAGE)
 
-    if request.method == 'POST':
-        data = request.form
-        num = data['num']
+    if page:
+        page = int(page)
+        if page > num_pages:
+            page = num_pages
+        elif page < 1:
+            page = 1
+    else:
+        page = 1
 
-    tweets = list(_storage.get_last_n_tweets(num))
-    return render_template('playback.html', tweets=tweets, num_tweets=_storage.get_num_tweets())
+    start = (page - 1) * _PER_PAGE
+    end = start + _PER_PAGE
+    if end > num_tweets:
+        end = num_tweets
+
+    tweets = _storage.get_range_of_tweets(start, end)
+    return render_template('playback.html', tweets=tweets, page=page, num_pages=num_pages, start=start, end=end, num_tweets=num_tweets)
 
 
 @_app.route("/frequency", methods=["GET"])

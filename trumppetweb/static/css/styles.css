@@ -92,6 +92,10 @@ a:hover {
   color: rgb(91, 183, 91);
 }
 
+a.plain-link {
+  text-decoration: none;
+}
+
 .match {
   color: red;
 }
