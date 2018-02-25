@@ -1,6 +1,5 @@
 html, body {
   height: 100%;
-  padding: 10px;
 }
 body {
   margin: 0;
@@ -22,13 +21,14 @@ body {
 .row {
   max-width: 1000px;
   width: auto;
+  margin: 90px 10px 10px 10px;
 }
 .flex-item {
   margin: 20px 0px;
   text-align: center;
 }
 .flex-item-header {
-  margin: 5px 0px;
+  margin: 15px 0px;
 }
 
 div.flex-search p.tweet {
@@ -40,7 +40,44 @@ div.flex-search p.tweet {
 }
 
 .nav {
+  display: none;
   margin-bottom: 20px;
+}
+
+.nav-bar {
+  border-bottom: 1px solid rgba(0,0,0,.1);
+}
+
+.nav-wrapper {
+  display: flex;
+  position: fixed;
+  top: 0px;
+  z-index: 2;
+  width: 100%;
+  background-color: #FFFFFF;
+  margin: 0px -20px 20px -20px;
+  padding: 15px 20px 20px 20px;
+}
+
+.title {
+  padding-left: 20px;
+}
+
+#menu {
+  position: relative;
+  margin-top: 10px;
+  cursor: pointer;
+  margin-left: auto;
+  padding-right: 20px;
+}
+
+#menu-items {
+  margin-top: 65px;
+  position: absolute;
+  padding: 0;
+  z-index: 1;
+  background: #FFFFFF;
+  width: 100%;
 }
 
 .large-font {
@@ -57,6 +94,10 @@ a:hover {
 
 .match {
   color: red;
+}
+
+table.freq-table {
+  margin-top: 20px;
 }
 
 td, th {
@@ -86,6 +127,27 @@ input[type=text] {
   font-size: .8em
 }
 
+li.spacer {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+::-webkit-input-placeholder {
+   text-align: center;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   text-align: center;  
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   text-align: center;  
+}
+
+:-ms-input-placeholder {  
+   text-align: center; 
+}
+
 .button {
   background-color: #FFFFFF;
   text-align: center;
@@ -103,6 +165,10 @@ input[type=text] {
   color: #FFFFFF;
   background-color: rgb(91, 183, 91);
   border: solid 1px #000000;
+}
+
+.button-large {
+  padding: 15px 30px;
 }
 
 .no-bullets {

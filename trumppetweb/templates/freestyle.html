@@ -4,7 +4,7 @@
 <body>
   <div class="flex-container">
     <div class="row">
-      <p class="large-font">At some point, Donald Trump probably said (this tweet is not real, it actually is fake news)...</p>
+      <span class="large-font">At some point, Donald Trump probably said (this tweet is not real, it actually is fake news)...</span>
       <ul class="no-bullets">
         <li>{{ trumpian_tweet | safe }}</li>
       </ul>
@@ -12,12 +12,12 @@
       <p>Original Tweets:</p>
       <ul>
       {% for original in original_tweets %}
-        <li><a class="fancytxt" href="https://twitter.com/statuses/{{ original['_id'] }}" target="_blank">Tweet {{ loop.index }}</a></li>
+        <li class="spacer"><a class="fancytxt" href="https://twitter.com/statuses/{{ original['_id'] }}" target="_blank">Status {{ original['_id'] }}</a></li>
       {% endfor %}
       </ul>
 
       <div class="flex-container ">
-        <button class="button" onClick="window.location.reload()">More Fake News!</button>
+        <button class="button button-large" onClick="window.location.reload()">More Fake News!</button>
       </div>
     </div>
   </div>
