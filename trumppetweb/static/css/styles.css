@@ -73,7 +73,7 @@ div.flex-search p.tweet {
 
 #menu-items {
   margin-top: 65px;
-  position: absolute;
+  position: fixed;
   padding: 0;
   z-index: 1;
   background: #FFFFFF;
