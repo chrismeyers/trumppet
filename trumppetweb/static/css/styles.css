@@ -23,6 +23,9 @@ body {
   width: auto;
   margin: 90px 10px 10px 10px;
 }
+.landing-block {
+  margin: 10px;
+}
 .flex-item {
   margin: 20px 0px;
   text-align: center;

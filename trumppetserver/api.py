@@ -30,7 +30,16 @@ def get_tweets(num):
     Return the last <num> tweets, max 50
     '''
 
-    last_n = _storage.get_last_n_tweets(num)
+    if not isinstance(num, int) and not num.isdigit():
+        num = 20
+    elif int(num) < 1:
+        num = 20
+    elif int(num) > 50:
+        num = 50
+    else:
+        num = int(num)
+
+    last_n = list(reversed(list(_storage.get_last_n_tweets(num))))
     return Response(json.dumps(last_n), mimetype='application/json')
 
 
