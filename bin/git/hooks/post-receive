@@ -7,7 +7,7 @@ do
     then
         echo "Deploying $ref branch to production..."
         git --work-tree=/home/chris/www/trumppet --git-dir=/home/chris/repo/trumppet.git checkout -f
-        echo "Restarting apache..."
+        echo "Restarting apache server..."
         sudo /bin/systemctl restart apache2
     else
         echo "Ref $ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
