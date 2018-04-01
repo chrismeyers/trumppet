@@ -43,7 +43,7 @@ def playback():
         end = num_tweets
 
     tweets = _storage.get_range_of_tweets(start, end)
-    return render_template('playback.html', tweets=tweets, page=page+1, num_pages=num_pages, start=start, end=end, num_tweets=num_tweets)
+    return render_template('playback.html', tweets=tweets, page=page, num_pages=num_pages, start=start, end=end, num_tweets=num_tweets)
 
 
 @_app.route("/frequency", methods=["GET"])
