@@ -28,7 +28,7 @@ def playback():
     num_tweets = _storage.get_num_tweets()
     num_pages = math.ceil(num_tweets / _PER_PAGE)
 
-    if page:
+    if page and page.isnumeric():
         page = int(page)
         if page > num_pages:
             page = num_pages

@@ -181,3 +181,7 @@ li.spacer {
 .no-bullets {
   list-style: none;
 }
+
+.tweet-range {
+  margin-bottom: 0px;
+}
