@@ -33,11 +33,11 @@ class TweetStorage:
 
         
 
-    def get_all_tweets(self, oldest=False):
+    def get_all_tweets(self, should_reverse=False):
         all_tweets = list(self.db_tweets.find())
         # Sorting by the twitter id (_id in the MongoDB) via the MongoDB sort()
         # does not guarantee the correct chronological order.
-        all_tweets.sort(key=lambda x: x['_id'], reverse=oldest)
+        all_tweets.sort(key=lambda x: int(x['_id']), reverse=should_reverse)
         return all_tweets
 
 
@@ -65,11 +65,11 @@ class TweetStorage:
         else:
             num = int(num)
 
-        return self.get_all_tweets(True)[-1 * num:]
+        return self.get_all_tweets(False)[-1 * num:]
 
 
     def get_range_of_tweets(self, start, end):
-        all_tweets = list(reversed(list(self.get_all_tweets())))
+        all_tweets = self.get_all_tweets(True)
         return all_tweets[start:end]
 
 
