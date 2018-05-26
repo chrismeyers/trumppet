@@ -42,11 +42,11 @@ class TweetStorage:
 
 
     def get_oldest_tweet(self):
-        return self.get_all_tweets(True)[-1:]
+        return self.get_all_tweets(True)[-1:][0]
 
 
     def get_newest_tweet(self):
-        return self.get_all_tweets(False)[-1:]
+        return self.get_all_tweets(False)[-1:][0]
 
 
     def get_num_tweets(self):
