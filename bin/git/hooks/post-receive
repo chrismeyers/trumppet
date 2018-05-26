@@ -16,10 +16,12 @@ do
         git --work-tree=/home/chris/www/trumppet --git-dir=/home/chris/repo/trumppet.git checkout -f
         echo "Installing dependencies..."
         cd /home/chris/www/trumppet
+        export LC_ALL=C.UTF-8
+        export LANG=C.UTF-8
         /home/chris/.local/bin/pipenv sync
         echo "Reloading wsgi..."
         touch /home/chris/www/trumppet/trumppetweb/wsgi.py
-        touch /home/chris/www/trumppet/trumppetapi/wsgi.py
+        touch /home/chris/www/trumppet/trumppetserver/wsgi.py
     else
         echo "Ref $ref successfully received.  Doing nothing: only the master branch may be deployed on this server."
     fi
