@@ -16,6 +16,8 @@ do
         git --work-tree=/home/chris/www/trumppet --git-dir=/home/chris/repo/trumppet.git checkout -f
         echo "Installing dependencies..."
         cd /home/chris/www/trumppet
+        export LC_ALL=C.UTF-8
+        export LANG=C.UTF-8
         /home/chris/.local/bin/pipenv install
         echo "Reloading wsgi..."
         touch /home/chris/www/trumppet/trumppetweb/wsgi.py
