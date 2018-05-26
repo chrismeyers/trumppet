@@ -33,16 +33,20 @@ class TweetStorage:
 
         
 
-    def get_all_tweets(self):
-        return self.db_tweets.find().sort("_id", pymongo.ASCENDING)
+    def get_all_tweets(self, oldest=False):
+        all_tweets = list(self.db_tweets.find())
+        # Sorting by the twitter id (_id in the MongoDB) via the MongoDB sort()
+        # does not guarantee the correct chronological order.
+        all_tweets.sort(key=lambda x: x['_id'], reverse=oldest)
+        return all_tweets
 
 
     def get_oldest_tweet(self):
-        return self.db_tweets.find_one(sort=[('_id', pymongo.ASCENDING)])
+        return self.get_all_tweets(True)[-1:]
 
 
     def get_newest_tweet(self):
-        return self.db_tweets.find_one(sort=[('_id', pymongo.DESCENDING)])
+        return self.get_all_tweets(False)[-1:]
 
 
     def get_num_tweets(self):
@@ -61,7 +65,7 @@ class TweetStorage:
         else:
             num = int(num)
 
-        return self.db_tweets.find(sort=[('_id', pymongo.DESCENDING)], limit=num)
+        return self.get_all_tweets(True)[-1 * num:]
 
 
     def get_range_of_tweets(self, start, end):
