@@ -14,7 +14,7 @@ do
     then
         echo "Deploying $ref branch to production..."
         git --work-tree=/home/chris/www/trumppet --git-dir=/home/chris/repo/trumppet.git checkout -f
-        echo "Installing dependencies..."
+        echo "Syncing dependencies..."
         cd /home/chris/www/trumppet
         export LC_ALL=C.UTF-8
         export LANG=C.UTF-8
