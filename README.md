@@ -142,16 +142,15 @@ sudo apt-get update
 sudo apt-get upgrade
 
 sudo apt-get install build-essential
-
 sudo apt-get install libssl-dev zlib1g-dev libncurses5-dev libncursesw5-dev libreadline-dev libsqlite3-dev 
-sudo apt-get install libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev tk-dev
+sudo apt-get install libgdbm-dev libdb5.3-dev libbz2-dev libexpat1-dev liblzma-dev tk-dev libffi-dev
 
-wget https://www.python.org/ftp/python/X.Y.Z/Python-X.Y.Z.tar.xz
-tar xf Python-X.Y.Z.tar.xz
+sudo wget https://www.python.org/ftp/python/X.Y.Z/Python-X.Y.Z.tar.xz
+sudo tar xf Python-X.Y.Z.tar.xz
 cd Python-X.Y.Z
-./configure --enable-shared --enable-optimizations
-make -j 8
-sudo make install
+sudo ./configure --enable-shared --enable-optimizations
+sudo make -j 8
+sudo make altinstall
 
 # If there are errors running 'python3 --version' run:
 sudo ln -s /usr/local/lib/libpython3.6m.so.1.0 /usr/lib/libpython3.6m.so.1.0
