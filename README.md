@@ -152,20 +152,20 @@ sudo ./configure --enable-shared --enable-optimizations
 sudo make -j 8
 sudo make altinstall
 
-# If there are errors running 'python3 --version' run:
-sudo ln -s /usr/local/lib/libpython3.6m.so.1.0 /usr/lib/libpython3.6m.so.1.0
+# If there are errors running 'pythonX.Y --version' run:
+sudo ln -s /usr/local/lib/libpythonX.Ym.so.1.0 /usr/lib/libpythonX.Ym.so.1.0
 ```
 
 <sup>2</sup> mod_wsgi build instructions:
 ```
-wget https://github.com/GrahamDumpleton/mod_wsgi/archive/X.Y.Z.tar.gz
-mv X.Y.Z.tar.gz mod_wsgi-X.Y.Z.tar.gz
-tar xvfz mod_wsgi-X.Y.Z.tar.gz
+sudo wget https://github.com/GrahamDumpleton/mod_wsgi/archive/X.Y.Z.tar.gz
+sudo mv X.Y.Z.tar.gz mod_wsgi-X.Y.Z.tar.gz
+sudo tar xvfz mod_wsgi-X.Y.Z.tar.gz
 
 cd mod_wsgi-X.Y.Z
-./configure --with-python=/path/to/python3
-make
-make install
+sudo ./configure --with-python=/path/to/python3
+sudo make
+sudo make install
 
 # If there are build errors, try installing:
 sudo apt-get install apache2-dev
