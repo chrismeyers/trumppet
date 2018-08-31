@@ -8,7 +8,6 @@ from mcgpyutils import ConfigUtils
 from mcgpyutils import ColorUtils as colors
 from .__version__ import __version__
 
-
 _TRUMPSERVER_NOT_RESP = 'The trumppetserver is not responding, please try again later.'
 
 _ou = OutputUtils()

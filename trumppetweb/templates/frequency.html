@@ -4,7 +4,7 @@
 <body>
   <div class="flex-container">
     <div class="row">
-      <span class="large-font">Mr. Trump really does have the best words! Here are the {{ best_words | length }} unique words that have been used:</span>
+      <p class="frequency-range">Showing words {{ start + 1 }}-{{ end }} of {{ num_unique_words }} unique words:</p><br>
 
       <div class="flex-container">
         <table class="freq-table">
@@ -12,7 +12,7 @@
             <th>Word</th>
             <th>Count</th>
           </tr>
-          {% for word in best_words %}
+          {% for word in words %}
           <tr>
             <td>{{ word[0] | safe }}</td>
             <td class="count">{{ word[1] }}</td>
@@ -20,6 +20,8 @@
           {% endfor %}
         </table>
       </div>
+
+      {% include 'pagination.html' %}
     </div>
   </div>
 </body>

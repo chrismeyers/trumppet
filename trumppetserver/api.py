@@ -5,12 +5,10 @@ from flask import Response
 from trumppetserver import TweetStorage
 from trumppetserver import TweetAnalyzer
 
-
 _storage = TweetStorage()
 _analyzer = TweetAnalyzer()
 
 _app = Flask(__name__)
-
 
 '''
 API Endpoints

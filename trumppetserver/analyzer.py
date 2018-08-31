@@ -57,6 +57,17 @@ class TweetAnalyzer:
         return sorted(best_words.items(), key=itemgetter(1), reverse=False), largest_word_length
 
 
+    def get_num_unique_words(self):
+        best_words, largest_word_length = self.get_word_frequency()
+        return len(list(best_words))
+
+
+    def get_range_of_word_freqs(self, start, end):
+        best_words, largest_word_length = self.get_word_frequency()
+        best_words = list(reversed(list(best_words))) # Most frequent at beginning
+        return best_words[start:end]
+
+
     def search_tweets(self, phrase):
         found_tweets = []
 

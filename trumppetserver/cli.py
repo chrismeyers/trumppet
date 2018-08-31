@@ -4,10 +4,8 @@ from mcgpyutils import ColorUtils as colors
 from .storage import TweetStorage
 from .__version__ import __version__
 
-
 _ou = OutputUtils()
 _storage = TweetStorage()
-
 
 @click.group(invoke_without_command=True, context_settings=dict(help_option_names=['-h', '--help']))
 @click.version_option(prog_name=f'{colors.RED}trump{colors.WHITE}pet-s{colors.BLUE}erver{colors.RETURN_TO_NORMAL}', version=__version__)

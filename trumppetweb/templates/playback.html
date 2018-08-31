@@ -4,7 +4,7 @@
 <body>
   <div class="flex-container">
     <div class="row">
-      <p class="tweet-range">Showing tweets {{ start + 1 }}-{{ end }} of {{ num_tweets }}</p><br>
+      <p class="tweet-range">Showing tweets {{ start + 1 }}-{{ end }} of {{ num_tweets }}:</p><br>
 
       {% for tweet in tweets %}
         <p>[<a href="https://twitter.com/statuses/{{ tweet['_id'] }}" target="_blank">{{ tweet['created_at'] }}</a>] {{ tweet['full_text'] | safe }}</p>

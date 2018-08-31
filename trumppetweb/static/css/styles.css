@@ -21,7 +21,7 @@ body {
 .row {
   max-width: 1000px;
   width: auto;
-  margin: 90px 10px 10px 10px;
+  margin: 75px 25px 25px 25px;
 }
 .landing-block {
   margin: 10px;
@@ -105,6 +105,7 @@ a.plain-link {
 
 table.freq-table {
   margin-top: 20px;
+  width:50%
 }
 
 td, th {
@@ -182,6 +183,12 @@ li.spacer {
   list-style: none;
 }
 
-.tweet-range {
+.tweet-range,
+.frequency-range {
   margin-bottom: 0px;
+}
+
+.pagination-controller {
+  padding-top: 25px;
+  text-align: center;
 }
