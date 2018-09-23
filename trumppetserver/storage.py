@@ -73,6 +73,10 @@ class TweetStorage:
         return all_tweets[start:end]
 
 
+    def get_screen_name(self):
+        return self.twitter_config['screen_name']
+
+
     def catalog_all_tweets(self):
         max_tweet_archive = 3200
         tweets_per_call = 200

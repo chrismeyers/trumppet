@@ -18,7 +18,7 @@
           {% endif %}
 
           {% for tweet in results %}
-            <p class="tweet"><a href="https://twitter.com/statuses/{{ tweet['_id'] }}" target="_blank">[{{ tweet['created_at'] }}]</a> {{ tweet['full_text'] | replace('\033[1;31m', '<span class="match">') | replace('\033[0m', '</span>') | safe }}</p>
+            <p class="tweet"><a href="https://twitter.com/{{ screen_name }}/status/{{ tweet['_id'] }}" target="_blank">[{{ tweet['created_at'] }}]</a> {{ tweet['full_text'] | replace('\033[1;31m', '<span class="match">') | replace('\033[0m', '</span>') | safe }}</p>
           {% endfor %}
         {% else %}
           {% if phrase %}

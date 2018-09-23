@@ -29,7 +29,7 @@ def playback():
     start, end = _get_paginated_range(page, num_pages, num_tweets, _PLAYBACK_PER_PAGE)
 
     tweets = _storage.get_range_of_tweets(start, end)
-    return render_template('playback.html', tweets=tweets, page=int(page), num_pages=num_pages, start=start, end=end, num_tweets=num_tweets)
+    return render_template('playback.html', tweets=tweets, page=int(page), num_pages=num_pages, start=start, end=end, num_tweets=num_tweets, screen_name=_storage.get_screen_name())
 
 
 @_app.route("/frequency", methods=["GET"])
@@ -53,13 +53,13 @@ def search():
         phrase = data['phrase'].strip()
         results = list(reversed(list(_analyzer.search_tweets(phrase))))
 
-    return render_template('search.html', phrase=phrase, results=results)
+    return render_template('search.html', phrase=phrase, results=results, screen_name=_storage.get_screen_name())
 
 
 @_app.route("/freestyle", methods=["GET"])
 def freestyle():
     trumpian_tweet, original_tweets = _analyzer.generate_trumpian_tweet()
-    return render_template('freestyle.html', trumpian_tweet=trumpian_tweet, original_tweets=original_tweets)
+    return render_template('freestyle.html', trumpian_tweet=trumpian_tweet, original_tweets=original_tweets, screen_name=_storage.get_screen_name())
 
 
 def _get_paginated_range(page, num_pages, num_items, per_page):

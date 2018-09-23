@@ -12,7 +12,7 @@
       <p>Original Tweets:</p>
       <ul>
       {% for original in original_tweets %}
-        <li class="spacer"><a class="fancytxt" href="https://twitter.com/statuses/{{ original['_id'] }}" target="_blank">Status {{ original['_id'] }}</a></li>
+        <li class="spacer"><a class="fancytxt" href="https://twitter.com/{{ screen_name }}/status/{{ original['_id'] }}" target="_blank">Status {{ original['_id'] }}</a></li>
       {% endfor %}
       </ul>
 

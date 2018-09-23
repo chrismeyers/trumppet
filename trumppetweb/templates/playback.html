@@ -7,7 +7,7 @@
       <p class="tweet-range">Showing tweets {{ start + 1 }}-{{ end }} of {{ num_tweets }}:</p><br>
 
       {% for tweet in tweets %}
-        <p>[<a href="https://twitter.com/statuses/{{ tweet['_id'] }}" target="_blank">{{ tweet['created_at'] }}</a>] {{ tweet['full_text'] | safe }}</p>
+        <p>[<a href="https://twitter.com/{{ screen_name }}/status/{{ tweet['_id'] }}" target="_blank">{{ tweet['created_at'] }}</a>] {{ tweet['full_text'] | safe }}</p>
       {% endfor %}
 
       {% include 'pagination.html' %}
