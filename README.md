@@ -50,6 +50,10 @@ Commands:
 | POST           | /search           | Gets tweets matching the given phrase  |
 | GET            | /freestyle        | Gets a fake Trumpian-style tweet       |
 
+**Endpoint examples**
+  * https://api.trumppetapp.com/tweets/10
+  * https://api.trumppetapp.com/freestyle
+
 ## Requirements
   * Python3 >= 3.6
   * pipenv
