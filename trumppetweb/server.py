@@ -14,10 +14,12 @@ _analyzer = TweetAnalyzer()
 _PLAYBACK_PER_PAGE = 20
 _FREQUENCY_PER_PAGE = 100
 
+
 @_app.route("/", methods=["GET"])
 def index():
-    start_date =_storage.get_oldest_tweet()['created_at']
-    ts = time.strftime('%B %d, %Y', time.strptime(start_date,'%a %b %d %H:%M:%S +0000 %Y'))
+    start_date = _storage.get_oldest_tweet()['created_at']
+    ts = time.strftime('%B %d, %Y', time.strptime(
+        start_date, '%a %b %d %H:%M:%S +0000 %Y'))
     return render_template('index.html', num_tweets=_storage.get_num_tweets(), start_date=ts)
 
 
@@ -26,7 +28,8 @@ def playback():
     page = request.args.get('page') or '1'
     num_tweets = _storage.get_num_tweets()
     num_pages = math.ceil(num_tweets / _PLAYBACK_PER_PAGE)
-    start, end = _get_paginated_range(page, num_pages, num_tweets, _PLAYBACK_PER_PAGE)
+    start, end = _get_paginated_range(
+        page, num_pages, num_tweets, _PLAYBACK_PER_PAGE)
 
     tweets = _storage.get_range_of_tweets(start, end)
     return render_template('playback.html', tweets=tweets, page=int(page), num_pages=num_pages, start=start, end=end, num_tweets=num_tweets, screen_name=_storage.get_screen_name())
@@ -37,7 +40,8 @@ def frequency():
     page = request.args.get('page') or '1'
     num_unique_words = _analyzer.get_num_unique_words()
     num_pages = math.ceil(num_unique_words / _FREQUENCY_PER_PAGE)
-    start, end = _get_paginated_range(page, num_pages, num_unique_words, _FREQUENCY_PER_PAGE)
+    start, end = _get_paginated_range(
+        page, num_pages, num_unique_words, _FREQUENCY_PER_PAGE)
 
     word_on_page = _analyzer.get_range_of_word_freqs(start, end)
     return render_template('frequency.html', words=word_on_page, page=int(page), num_pages=num_pages, start=start, end=end, num_unique_words=num_unique_words)

@@ -7,6 +7,7 @@ from .__version__ import __version__
 _ou = OutputUtils()
 _storage = TweetStorage()
 
+
 @click.group(invoke_without_command=True, context_settings=dict(help_option_names=['-h', '--help']))
 @click.version_option(prog_name=f'{colors.RED}trump{colors.WHITE}pet-s{colors.BLUE}erver{colors.RETURN_TO_NORMAL}', version=__version__)
 @click.pass_context
@@ -16,7 +17,7 @@ def cli(context):
     the insertion of data into a MongoDB database from data received through the
     Twitter API.
     '''
-    
+
     # Show help if no command was specified.
     if context.invoked_subcommand is None:
         click.echo(context.get_help())

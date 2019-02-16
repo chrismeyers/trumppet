@@ -22,6 +22,7 @@ API Endpoints
 
 '''
 
+
 @_app.route("/tweets/<num>", methods=["GET"])
 def get_tweets(num):
     '''

@@ -15,15 +15,18 @@ _fsu = FileSystemUtils()
 _config = ConfigUtils()
 
 _fsu.set_config_location(f'{_fsu.get_path_to_script(__file__)}/config')
-_config.parse_json_config(f'{_fsu.get_config_location()}/trumppetclient_config.json')
+_config.parse_json_config(
+    f'{_fsu.get_config_location()}/trumppetclient_config.json')
 
 # If another instance of the trumppetserver API is running, local or otherwise,
-# it can be used instead of the default. 
+# it can be used instead of the default.
 if 'custom' in _config.get_json_config_field('trumppetserver')['base_url'] and \
   _config.get_json_config_field('trumppetserver')['base_url']['custom'] != '':
-    _base_url = _config.get_json_config_field('trumppetserver')['base_url']['custom']
+    _base_url = _config.get_json_config_field(
+        'trumppetserver')['base_url']['custom']
 else:
-    _base_url = _config.get_json_config_field('trumppetserver')['base_url']['default']
+    _base_url = _config.get_json_config_field(
+        'trumppetserver')['base_url']['default']
 
 
 @click.group(invoke_without_command=True, context_settings=dict(help_option_names=['-h', '--help']))
@@ -34,7 +37,7 @@ def cli(context):
     Client component of a Donald Trump tweet analyzer. This application displays
     data retrieved from the server component through HTTP requests.
     '''
-    
+
     # Show help if no command was specified.
     if context.invoked_subcommand is None:
         click.echo(context.get_help())
@@ -78,7 +81,7 @@ def frequency():
 
     _ou.info(f'Mr. Trump really does have the best words!')
     _ou.info('Here are his most frequent:')
-    
+
     for word_info in best_words:
         print(f'{word_info[0]: <{largest_word_length}} {word_info[1]}')
 

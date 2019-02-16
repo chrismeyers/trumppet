@@ -4,6 +4,7 @@ from mcgpyutils import FileSystemUtils
 from mcgpyutils import ConfigUtils
 from mcgpyutils import OutputUtils
 
+
 class TweetStorage:
     def __init__(self):
         self.ou = OutputUtils()
@@ -11,7 +12,8 @@ class TweetStorage:
         config = ConfigUtils()
 
         fsu.set_config_location(f'{fsu.get_path_to_script(__file__)}/config')
-        config.parse_json_config(f'{fsu.get_config_location()}/trumppetserver_config.json')
+        config.parse_json_config(
+            f'{fsu.get_config_location()}/trumppetserver_config.json')
 
         self.mongodb_config = config.get_json_config_field('mongodb')
         self.twitter_config = config.get_json_config_field('twitter')
@@ -31,8 +33,6 @@ class TweetStorage:
                                tweet_mode='extended',
                                sleep_on_rate_limit=True)
 
-        
-
     def get_all_tweets(self, should_reverse=False):
         all_tweets = list(self.db_tweets.find())
         # Sorting by the twitter id (_id in the MongoDB) via the MongoDB sort()
@@ -40,18 +40,14 @@ class TweetStorage:
         all_tweets.sort(key=lambda x: int(x['_id']), reverse=should_reverse)
         return all_tweets
 
-
     def get_oldest_tweet(self):
         return self.get_all_tweets(True)[-1:][0]
-
 
     def get_newest_tweet(self):
         return self.get_all_tweets(False)[-1:][0]
 
-
     def get_num_tweets(self):
         return self.db_tweets.count()
-
 
     def get_last_n_tweets(self, num):
         num_tweets = self.get_num_tweets()
@@ -67,15 +63,12 @@ class TweetStorage:
 
         return self.get_all_tweets(False)[-1 * num:]
 
-
     def get_range_of_tweets(self, start, end):
         all_tweets = self.get_all_tweets(True)
         return all_tweets[start:end]
 
-
     def get_screen_name(self):
         return self.twitter_config['screen_name']
-
 
     def catalog_all_tweets(self):
         max_tweet_archive = 3200
@@ -85,16 +78,17 @@ class TweetStorage:
         batch = 1
 
         while len(tweets) < max_tweet_archive:
-            statuses = self.api.GetUserTimeline(screen_name=self.twitter_config['screen_name'], 
+            statuses = self.api.GetUserTimeline(screen_name=self.twitter_config['screen_name'],
                                                 count=tweets_per_call,
                                                 max_id=oldest_tweet_id)
 
-            self.ou.info(f'Processing tweet batch {batch} ({len(statuses)} new, {len(tweets)} total)...')
+            self.ou.info(
+                f'Processing tweet batch {batch} ({len(statuses)} new, {len(tweets)} total)...')
 
             for i, status in enumerate(statuses):
                 if i == 0 and oldest_tweet_id:
                     # max_id returns tweets greater than or EQUAL to the given ID.
-                    # Skipping the first tweet of the current batch prevents 
+                    # Skipping the first tweet of the current batch prevents
                     # duplicating the last tweet of the previous batch.
                     continue
                 tweets.append(self._prepare_tweet(status))
@@ -107,9 +101,9 @@ class TweetStorage:
             self.ou.info(f'Inserted {len(tweets)} tweets')
             return len(tweets)
         except pymongo.errors.BulkWriteError as e:
-            self.ou.error('Batch insert failed. The `catalog` command has likely already been executed. Try using the `record` command instead.')
+            self.ou.error(
+                'Batch insert failed. The `catalog` command has likely already been executed. Try using the `record` command instead.')
             return -1
-
 
     def record_new_tweets(self):
         tweets_per_call = 200
@@ -125,7 +119,8 @@ class TweetStorage:
             try:
                 self.db_tweets.insert_one(tweet)
                 new_tweets = True
-                self.ou.info(f'Good news, President Trump just shed some new wisdom on {status.created_at}!')
+                self.ou.info(
+                    f'Good news, President Trump just shed some new wisdom on {status.created_at}!')
             except pymongo.errors.DuplicateKeyError as e:
                 pass
 
@@ -134,10 +129,9 @@ class TweetStorage:
 
         return new_tweets
 
-
     def _prepare_tweet(self, status):
-        # Use the tweet id as the mongodb collection _id. This assumes we never 
-        # get a duplicate tweet id. 
+        # Use the tweet id as the mongodb collection _id. This assumes we never
+        # get a duplicate tweet id.
         tweet = {
             '_id': status.id_str,
             'created_at': status.created_at,
